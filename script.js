@@ -4,7 +4,7 @@ const RegistrationModule = (() => {
 
     const createErrorMessage = (message) => {
         const errorMessage = document.createElement('p');
-        errorMessage.className = 'error-message';
+        errorMessage.className = 'error-message text-danger';
         errorMessage.textContent = message;
         return errorMessage;
     };
@@ -42,23 +42,15 @@ const RegistrationModule = (() => {
         }
     };
 
-    const handleSubmit = () => {
+    const handleNext = () => {
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
         const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value.trim();
-        const confirmPassword = document.getElementById('confirm-password').value.trim();
-        const dob = document.getElementById('dob').value.trim();
-        const gender = document.querySelector('input[name="gender"]:checked').value;
-        const notes = document.getElementById('notes').value.trim();
 
         const errors = [
             validateInput(firstName, 'name'),
             validateInput(lastName, 'name'),
             validateInput(email, 'email'),
-            validateInput(password, 'password'),
-            password === confirmPassword ? '' : 'Passwords do not match',
-            validateInput(dob, 'dob')
         ];
 
         const errorContainer = document.getElementById('error-container');
@@ -70,33 +62,56 @@ const RegistrationModule = (() => {
         });
 
         if (errors.every((error) => error === '')) {
-            if (currentStep === 1) {
-                currentStep = 2;
-                renderForm();
-            } else {
-                const user = {
-                    firstName,
-                    lastName,
-                    email,
-                    password,
-                    dob,
-                    gender,
-                    notes,
-                };
-                userData.push(user);
-                userData.sort((a, b) => a.lastName.localeCompare(b.lastName));
+            currentStep = 2;
+            renderForm();
+        }
+    };
 
-                renderUserList();
+    const handleSave = () => {
+        // Existing code for handling save button click
 
-                currentStep = 1;
-                renderForm();
-            }
+        // ...
+
+        if (errors.every((error) => error === '')) {
+            const user = {
+                firstName,
+                lastName,
+                email,
+                password,
+                dob,
+                gender,
+                notes,
+            };
+            userData.push(user);
+            userData.sort((a, b) => a.lastName.localeCompare(b.lastName));
+
+            renderUserList();
+
+            currentStep = 1;
+            renderForm();
         }
     };
 
     const goBack = () => {
         currentStep = 1;
         renderForm();
+    };
+
+    const addEventListeners = () => {
+        const nextButton = document.getElementById('next-button');
+        if (nextButton) {
+            nextButton.addEventListener('click', handleNext);
+        }
+
+        const saveButton = document.getElementById('save-button');
+        if (saveButton) {
+            saveButton.addEventListener('click', handleSave);
+        }
+
+        const backButton = document.getElementById('back-button');
+        if (backButton) {
+            backButton.addEventListener('click', goBack);
+        }
     };
 
     const renderForm = () => {
@@ -106,38 +121,64 @@ const RegistrationModule = (() => {
         if (currentStep === 1) {
             const form1 = document.createElement('div');
             form1.innerHTML = `
-            <label for="first-name">First Name:</label>
-            <input type="text" id="first-name" required>
-            <label for="last-name">Last Name:</label>
-            <input type="text" id="last-name" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" required>
-            <button onclick="RegistrationModule.handleSubmit()">Next</button>
-            <div id="error-container"></div>
-        `;
+                        <form>
+                            <div class="mb-3">
+                                <label for="first-name" class="form-label">First Name:</label>
+                                <input type="text" class="form-control" id="first-name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="last-name" class="form-label">Last Name:</label>
+                                <input type="text" class="form-control" id="last-name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <button type="button" class="btn btn-primary" id="next-button">Next</button>
+                            <div id="error-container"></div>
+                        </form>
+                    `;
             registrationContainer.appendChild(form1);
         } else {
             const form2 = document.createElement('div');
             form2.innerHTML = `
-            <label for="password">Password:</label>
-            <input type="password" id="password" required>
-            <label for="confirm-password">Confirm Password:</label>
-            <input type="password" id="confirm-password" required>
-            <label for="dob">Date of Birth:</label>
-            <input type="date" id="dob" required>
-            <label>Gender:</label>
-            <label for="male">Male</label>
-            <input type="radio" id="male" name="gender" value="male" required>
-            <label for="female">Female</label>
-            <input type="radio" id="female" name="gender" value="female" required>
-            <label for="notes">Notes:</label>
-            <textarea id="notes" maxlength="100"></textarea>
-            <button onclick="RegistrationModule.handleSubmit()">Save</button>
-            <button onclick="RegistrationModule.goBack()">Back</button>
-            <div id="error-container"></div>
-        `;
+                        <form>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password:</label>
+                                <input type="password" class="form-control" id="password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirm-password" class="form-label">Confirm Password:</label>
+                                <input type="password" class="form-control" id="confirm-password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dob" class="form-label">Date of Birth:</label>
+                                <input type="date" class="form-control" id="dob" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Gender:</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="gender" id="male" value="male" required>
+                                    <label class="form-check-label" for="male">Male</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="gender" id="female" value="female" required>
+                                    <label class="form-check-label" for="female">Female</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="notes" class="form-label">Notes:</label>
+                                <textarea class="form-control" id="notes" maxlength="100"></textarea>
+                            </div>
+                            <button type="button" class="btn btn-success" id="save-button">Save</button>
+                            <button type="button" class="btn btn-secondary" id="back-button">Back</button>
+                            <div id="error-container"></div>
+                        </form>
+                    `;
             registrationContainer.appendChild(form2);
         }
+
+        addEventListeners(); // Add event listeners after rendering the form
     };
 
     const renderUserList = () => {
@@ -146,41 +187,40 @@ const RegistrationModule = (() => {
 
         if (userData.length > 0) {
             const userList = document.createElement('table');
+            userList.className = 'table table-bordered table-striped mt-4';
             userList.innerHTML = `
-        <thead>
-          <tr>
-            <th>Last Name</th>
-            <th>First Name</th>
-            <th>Email</th>
-            <th>Password</th>
-            <th>Date of Birth</th>
-            <th>Gender</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${userData.map(user => `
-            <tr>
-              <td>${user.lastName}</td>
-              <td>${user.firstName}</td>
-              <td>${user.email}</td>
-              <td>${user.password}</td>
-              <td>${user.dob}</td>
-              <td>${user.gender}</td>
-              <td>${user.notes}</td>
-            </tr>
-          `).join('')}
-        </tbody>
-      `;
+                        <thead>
+                            <tr>
+                                <th>Last Name</th>
+                                <th>First Name</th>
+                                <th>Email</th>
+                                <th>Password</th>
+                                <th>Date of Birth</th>
+                                <th>Gender</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${userData.map(user => `
+                                <tr>
+                                    <td>${user.lastName}</td>
+                                    <td>${user.firstName}</td>
+                                    <td>${user.email}</td>
+                                    <td>${user.password}</td>
+                                    <td>${user.dob}</td>
+                                    <td>${user.gender}</td>
+                                    <td>${user.notes}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    `;
             registrationContainer.appendChild(userList);
         }
     };
 
     return {
-        handleSubmit,
-        goBack,
         renderForm,
-        renderUserList
+        renderUserList,
     };
 })();
 
