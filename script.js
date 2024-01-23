@@ -68,9 +68,32 @@ const RegistrationModule = (() => {
     };
 
     const handleSave = () => {
-        // Existing code for handling save button click
+        const firstName = document.getElementById('first-name').value.trim();
+        const lastName = document.getElementById('last-name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const confirmPassword = document.getElementById('confirm-password').value.trim();
+        const dob = document.getElementById('dob').value.trim();
+        const gender = document.querySelector('input[name="gender"]:checked')?.value;
+        const notes = document.getElementById('notes').value.trim();
 
-        // ...
+        const errors = [
+            validateInput(firstName, 'name'),
+            validateInput(lastName, 'name'),
+            validateInput(email, 'email'),
+            validateInput(password, 'password'),
+            password === confirmPassword ? '' : 'Passwords do not match',
+            validateInput(dob, 'dob'),
+            gender ? '' : 'Please select a gender',
+        ];
+
+        const errorContainer = document.getElementById('error-container');
+        errorContainer.innerHTML = '';
+        errors.forEach((error) => {
+            if (error) {
+                errorContainer.appendChild(createErrorMessage(`Input ${error}`));
+            }
+        });
 
         if (errors.every((error) => error === '')) {
             const user = {
@@ -86,6 +109,17 @@ const RegistrationModule = (() => {
             userData.sort((a, b) => a.lastName.localeCompare(b.lastName));
 
             renderUserList();
+
+            // Reset input fields to blank
+            document.getElementById('first-name').value = '';
+            document.getElementById('last-name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('confirm-password').value = '';
+            document.getElementById('dob').value = '';
+            document.getElementById('male').checked = false;
+            document.getElementById('female').checked = false;
+            document.getElementById('notes').value = '';
 
             currentStep = 1;
             renderForm();
