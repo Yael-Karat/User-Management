@@ -10,12 +10,12 @@ const RegistrationModule = (() => {
     };
 
     const isValidEmail = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailRegex = /^[a-zA-Z0-9._-]+@([a-zA-Z0-9-]+\.)+ac\.il$/;
         return emailRegex.test(email);
     };
 
     const isValidPassword = (password) => {
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+        const passwordRegex = /^(?=.*[a-z]*)*(?=.*[A-Z])(?=.*\d).{8,}$/;
         return passwordRegex.test(password);
     };
 
@@ -78,8 +78,8 @@ const RegistrationModule = (() => {
         const comments = document.getElementById('comments').value.trim();
 
         const errors = [
-            validateInput(firstName, 'name'),
-            validateInput(lastName, 'name'),
+            validateInput(firstName, 'first name'),
+            validateInput(lastName, 'last name'),
             validateInput(email, 'email'),
             validateInput(password, 'password'),
             password === confirmPassword ? '' : 'Passwords do not match',
