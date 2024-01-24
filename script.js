@@ -30,13 +30,13 @@ const RegistrationModule = (() => {
         const trimmedInput = input.trim();
         switch (type) {
             case 'name':
-                return trimmedInput.match(/^[a-zA-Z]+$/) ? '' : 'Invalid name';
+                return trimmedInput.match(/^[a-z]+$/) ? '' : 'Name is mandatory and must contain only alphabets.';
             case 'email':
-                return isValidEmail(trimmedInput) ? '' : 'Invalid email';
+                return isValidEmail(trimmedInput) ? '' : 'Email is mandatory and must be valid for an academic email from Israel (*.ac.il).';
             case 'password':
-                return isValidPassword(trimmedInput) ? '' : 'Invalid password';
+                return isValidPassword(trimmedInput) ? '' : 'Password must contain at least one uppercase letter, at least one lowercase letter, one digit, and must be at least 8 characters long.';
             case 'dob':
-                return isValidDateOfBirth(trimmedInput) ? '' : 'User must be at least 18 years old';
+                return isValidDateOfBirth(trimmedInput) ? '' : 'User must be at least 18 years old.';
             default:
                 return '';
         }
