@@ -123,8 +123,12 @@ const RegistrationModule = (() => {
     };
 
     const goBack = () => {
-        currentStep = 1;
-        renderForm();
+        if (currentStep === 2) {
+            // If currently on the second step, go back to the first step
+            document.getElementById('secondStep').style.display = 'none';
+            document.getElementById('firstStep').style.display = 'block';
+            currentStep = 1;
+        }
     };
 
     const addEventListeners = () => {
