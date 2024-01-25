@@ -19,6 +19,16 @@ const RegistrationModule = (() => {
         return ageDiff >= 18;
     };
 
+    const validInput = (input, type) => {
+        const trimmedInput = input.trim();
+        switch (type) {
+            case 'name':
+                return trimmedInput.match(/^[a-zA-Z]+$/) ? '' : 'Name is mandatory and must contain only alphabets.';
+            case 'email':
+                return isValidEmail(trimmedInput) ? '' : 'Email is mandatory and must be valid for an academic email from Israel (*.ac.il).';
+        }
+    };
+
     const validateInput = (input, type) => {
         const trimmedInput = input.trim();
         switch (type) {
@@ -35,10 +45,31 @@ const RegistrationModule = (() => {
         }
     };
 
-    const handleNext = () => {
+    function validFirstStep() {
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
         const email = document.getElementById('email').value.trim();
+
+        const firstNameError = validInput(firstName, 'name');
+        const lastNameError = validInput(lastName, 'name');
+        const emailError = validInput(email, 'email');
+
+        if (!firstNameError && !lastNameError && !emailError) {
+            // No errors, directly advance to the next step
+            handleNext();
+        } else {
+            // Display error messages
+            document.getElementById('firstNameError').innerText = firstNameError;
+            document.getElementById('lastNameError').innerText = lastNameError;
+            document.getElementById('emailError').innerText = emailError;
+        }
+    }
+
+    const handleNext = () => {
+        // Hide the first form and show the second form
+        document.getElementById('firstStep').style.display = 'none';
+        document.getElementById('secondStep').style.display = 'block';
+        currentStep = 2; // Update the current step
     };
 
     const handleSave = () => {
@@ -102,18 +133,20 @@ const RegistrationModule = (() => {
             nextButton.addEventListener('click', handleNext);
         }
 
+        const backButton = document.getElementById('previous-button');
+        if (backButton) {
+            backButton.addEventListener('click', goBack);
+        }
+
         const saveButton = document.getElementById('save-button');
         if (saveButton) {
             saveButton.addEventListener('click', handleSave);
         }
-
-        const backButton = document.getElementById('back-button');
-        if (backButton) {
-            backButton.addEventListener('click', goBack);
-        }
     };
+    addEventListeners();
 
     return {
+        validFirstStep,
         renderForm,
         renderUserList,
     };
