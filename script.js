@@ -152,19 +152,22 @@ const RegistrationModule = (() => {
         userData.forEach((user) => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${user.firstName}</td>
-                <td>${user.lastName}</td>
-                <td>${user.email}</td>
-                <td>${user.dob}</td>
-                <td>${user.password}</td>
-                <td>${user.gender}</td>
-                <td>${user.comments}</td>
-            `;
+            <td>${user.firstName}</td>
+            <td>${user.lastName}</td>
+            <td>${user.email}</td>
+            <td>${user.dob}</td>
+            <td>${user.password}</td>
+            <td>${user.gender}</td>
+            <td>${user.comments}</td>
+        `;
             userList.appendChild(row);
         });
 
         // Show the table if there are users, otherwise hide it
         document.querySelector('.table').style.display = userData.length ? 'table' : 'none';
+
+        // Show or hide the message for an empty table based on the number of users
+        document.getElementById('emptyTableMessage').style.display = userData.length ? 'none' : 'block';
     };
 
     const addEventListeners = () => {
