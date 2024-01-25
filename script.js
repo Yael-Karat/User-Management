@@ -89,7 +89,7 @@ const RegistrationModule = (() => {
             validateInput(password, 'password'),
             password === confirmPassword ? '' : 'Passwords do not match',
             validateInput(dob, 'dob'),
-            gender !== '1' ? '' : 'Please select a gender',
+            gender !== '1' ? '' : 'Please select a gender.',
         ];
 
         if (errors.every((error) => error === '')) {
@@ -97,15 +97,22 @@ const RegistrationModule = (() => {
                 firstName,
                 lastName,
                 email,
-                password,  // Include the password in the user object
+                password,
                 dob,
                 gender,
                 comments,
             };
-            userData.push(user);
-            userData.sort((a, b) => a.lastName.localeCompare(b.lastName));
+
+            // Insert user in alphabetical order based on last name
+            const index = userData.findIndex((u) => u.lastName > lastName);
+            if (index === -1) {
+                userData.push(user);
+            } else {
+                userData.splice(index, 0, user);
+            }
 
             renderUserList();
+            // Optionally, add a success message or visual indication
 
             // Reset input fields to blank
             document.getElementById('first-name').value = '';
@@ -117,8 +124,15 @@ const RegistrationModule = (() => {
             document.getElementById('Gender').value = '1';
             document.getElementById('comments').value = '';
 
-            currentStep = 1;
-            renderForm();
+            // Show the first form and hide the second form
+            document.getElementById('secondStep').style.display = 'none';
+            document.getElementById('firstStep').style.display = 'block';
+        } else {
+            // Display error messages for incorrect inputs
+            document.getElementById('passwordError').innerText = errors[3];
+            document.getElementById('confirmPasswordError').innerText = errors[4];
+            document.getElementById('dateOfBirthError').innerText = errors[5];
+            document.getElementById('genderError').innerText = errors[6];
         }
     };
 
@@ -129,6 +143,28 @@ const RegistrationModule = (() => {
             document.getElementById('firstStep').style.display = 'block';
             currentStep = 1;
         }
+    };
+
+    const renderUserList = () => {
+        const userList = document.getElementById('userList');
+        userList.innerHTML = ''; // Clear previous list
+
+        userData.forEach((user) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.firstName}</td>
+                <td>${user.lastName}</td>
+                <td>${user.email}</td>
+                <td>${user.dob}</td>
+                <td>${user.password}</td>
+                <td>${user.gender}</td>
+                <td>${user.comments}</td>
+            `;
+            userList.appendChild(row);
+        });
+
+        // Show the table if there are users, otherwise hide it
+        document.querySelector('.table').style.display = userData.length ? 'table' : 'none';
     };
 
     const addEventListeners = () => {
@@ -151,9 +187,6 @@ const RegistrationModule = (() => {
 
     return {
         validFirstStep,
-        renderForm,
         renderUserList,
     };
 })();
-
-RegistrationModule.renderForm();
