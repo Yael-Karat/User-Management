@@ -46,6 +46,7 @@ const RegistrationModule = (() => {
     };
 
     function validFirstStep() {
+
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
         const email = document.getElementById('email').value.trim();
@@ -89,7 +90,7 @@ const RegistrationModule = (() => {
         const password = document.getElementById('password').value.trim();
         const confirmPassword = document.getElementById('confirm-password').value.trim();
         const dob = document.getElementById('dob').value.trim();
-        const gender = document.getElementById('Gender').value;
+        const gender = document.getElementById('gender').value; // Corrected reference to "gender"
         const comments = document.getElementById('comments').value.trim();
 
         const errors = [
@@ -99,7 +100,7 @@ const RegistrationModule = (() => {
             validateInput(password, 'password'),
             password === confirmPassword ? '' : 'Passwords do not match',
             validateInput(dob, 'dob'),
-            gender !== '1' ? '' : 'Please select a gender.',
+            gender !== 'Please select' ? '' : 'Please select a gender.', // Corrected line
         ];
 
         if (errors.every((error) => error === '')) {
@@ -131,8 +132,11 @@ const RegistrationModule = (() => {
             document.getElementById('password').value = '';
             document.getElementById('confirm-password').value = '';
             document.getElementById('dob').value = '';
-            document.getElementById('Gender').value = '1';
+            document.getElementById('gender').value = 'Please select'; // Reset to default value
             document.getElementById('comments').value = '';
+
+            // Reset form fields to their default values
+            document.getElementById('firstForm').reset();
 
             // Show the first form and hide the second form
             document.getElementById('secondStep').style.display = 'none';
@@ -183,35 +187,7 @@ const RegistrationModule = (() => {
     const addEventListeners = () => {
         const nextButton = document.getElementById('next-button');
         if (nextButton) {
-            nextButton.addEventListener('click', () => {
-                const firstName = document.getElementById('first-name').value.trim();
-                const lastName = document.getElementById('last-name').value.trim();
-                const email = document.getElementById('email').value.trim();
-
-                const firstNameError = validInput(firstName, 'name');
-                const lastNameError = validInput(lastName, 'name');
-                const emailError = validInput(email, 'email');
-
-                // Check if the email already exists
-                const emailExists = userData.some(user => user.email === email);
-                if (emailExists) {
-                    document.getElementById('emailError').innerText = 'Email already exists. Please use a different email.';
-                    return; // Stop the registration process
-                }
-
-                // Display error messages for first name, last name, and email
-                document.getElementById('firstNameError').innerText = firstNameError;
-                document.getElementById('lastNameError').innerText = lastNameError;
-                document.getElementById('emailError').innerText = emailError;
-
-                if (!firstNameError && !lastNameError && !emailError) {
-                    // No errors, proceed to the second step
-                    handleNext(); // Proceed to the second form
-                } else {
-                    // Hide the second form if there are errors
-                    document.getElementById('secondStep').style.display = 'none';
-                }
-            });
+            nextButton.addEventListener('click', validFirstStep);
         }
 
         const backButton = document.getElementById('previous-button');
@@ -219,6 +195,7 @@ const RegistrationModule = (() => {
             backButton.addEventListener('click', goBack);
         }
 
+        // Corrected id to match the Save button in the HTML
         const saveButton = document.getElementById('save-button');
         if (saveButton) {
             saveButton.addEventListener('click', handleSave);
