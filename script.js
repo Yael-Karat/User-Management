@@ -2,6 +2,16 @@ const RegistrationModule = (() => {
     let userData = [];
     let currentStep = 1;
 
+    const isValidFirstName = (firstName) => {
+        const FirstNameRegex = /^[a-zA-Z]+$/;
+        return FirstNameRegex.test(firstName);
+    };
+
+    const isValidLastName = (lastName) => {
+        const LastNameRegex = /^[a-zA-Z]+$/;
+        return LastNameRegex.test(lastName);
+    };
+
     const isValidEmail = (email) => {
         const emailRegex = /^[a-zA-Z0-9._-]+@([a-zA-Z0-9-]+\.)+ac\.il$/;
         return emailRegex.test(email);
@@ -22,8 +32,10 @@ const RegistrationModule = (() => {
     const validInput = (input, type) => {
         const trimmedInput = input.trim();
         switch (type) {
-            case 'name':
-                return trimmedInput.match(/^[a-zA-Z]+$/) ? '' : 'Name is mandatory and must contain only alphabets.';
+            case 'firstName':
+                return isValidFirstName(trimmedInput) ? '' : 'First name is mandatory and must contain only alphabets.';
+            case 'lastName':
+                return isValidLastName(trimmedInput) ? '' : 'Last name is mandatory and must contain only alphabets.';
             case 'email':
                 return isValidEmail(trimmedInput) ? '' : 'Email is mandatory and must be valid for an academic email from Israel (*.ac.il).';
         }
@@ -32,8 +44,10 @@ const RegistrationModule = (() => {
     const validateInput = (input, type) => {
         const trimmedInput = input.trim();
         switch (type) {
-            case 'name':
-                return trimmedInput.match(/^[a-zA-Z]+$/) ? '' : 'Name is mandatory and must contain only alphabets.';
+            case 'firstName':
+                return isValidFirstName(trimmedInput) ? '' : 'First name is mandatory and must contain only alphabets.';
+            case 'lastName':
+                return isValidLastName(trimmedInput) ? '' : 'Last name is mandatory and must contain only alphabets.';
             case 'email':
                 return isValidEmail(trimmedInput) ? '' : 'Email is mandatory and must be valid for an academic email from Israel (*.ac.il).';
             case 'password':
@@ -46,13 +60,12 @@ const RegistrationModule = (() => {
     };
 
     function validFirstStep() {
-
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
         const email = document.getElementById('email').value.trim();
 
-        const firstNameError = validInput(firstName, 'name');
-        const lastNameError = validInput(lastName, 'name');
+        const firstNameError = validInput(firstName, 'firstName');
+        const lastNameError = validInput(lastName, 'lastName');
         const emailError = validInput(email, 'email');
 
         // Check if the email already exists
