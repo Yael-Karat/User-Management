@@ -54,14 +54,24 @@ const RegistrationModule = (() => {
         const lastNameError = validInput(lastName, 'name');
         const emailError = validInput(email, 'email');
 
+        // Check if the email already exists
+        const emailExists = userData.some(user => user.email === email);
+        if (emailExists) {
+            document.getElementById('emailError').innerText = 'Email already exists. Please use a different email.';
+            return; // Stop the registration process
+        }
+
+        // Display error messages for first name, last name, and email
+        document.getElementById('firstNameError').innerText = firstNameError;
+        document.getElementById('lastNameError').innerText = lastNameError;
+        document.getElementById('emailError').innerText = emailError;
+
         if (!firstNameError && !lastNameError && !emailError) {
-            // No errors, directly advance to the next step
-            handleNext();
+            // No errors, proceed to the second step
+            handleNext(); // Proceed to the second form
         } else {
-            // Display error messages
-            document.getElementById('firstNameError').innerText = firstNameError;
-            document.getElementById('lastNameError').innerText = lastNameError;
-            document.getElementById('emailError').innerText = emailError;
+            // Hide the second form if there are errors
+            document.getElementById('secondStep').style.display = 'none';
         }
     }
 
@@ -173,7 +183,35 @@ const RegistrationModule = (() => {
     const addEventListeners = () => {
         const nextButton = document.getElementById('next-button');
         if (nextButton) {
-            nextButton.addEventListener('click', handleNext);
+            nextButton.addEventListener('click', () => {
+                const firstName = document.getElementById('first-name').value.trim();
+                const lastName = document.getElementById('last-name').value.trim();
+                const email = document.getElementById('email').value.trim();
+
+                const firstNameError = validInput(firstName, 'name');
+                const lastNameError = validInput(lastName, 'name');
+                const emailError = validInput(email, 'email');
+
+                // Check if the email already exists
+                const emailExists = userData.some(user => user.email === email);
+                if (emailExists) {
+                    document.getElementById('emailError').innerText = 'Email already exists. Please use a different email.';
+                    return; // Stop the registration process
+                }
+
+                // Display error messages for first name, last name, and email
+                document.getElementById('firstNameError').innerText = firstNameError;
+                document.getElementById('lastNameError').innerText = lastNameError;
+                document.getElementById('emailError').innerText = emailError;
+
+                if (!firstNameError && !lastNameError && !emailError) {
+                    // No errors, proceed to the second step
+                    handleNext(); // Proceed to the second form
+                } else {
+                    // Hide the second form if there are errors
+                    document.getElementById('secondStep').style.display = 'none';
+                }
+            });
         }
 
         const backButton = document.getElementById('previous-button');
@@ -186,6 +224,7 @@ const RegistrationModule = (() => {
             saveButton.addEventListener('click', handleSave);
         }
     };
+
     addEventListeners();
 
     return {
