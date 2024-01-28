@@ -48,28 +48,6 @@
 
             <button type="button" class="btn btn-primary" id="next-button" style="margin-left: 3%; margin-bottom: 2%;" onclick="RegistrationModule.validFirstStep()">Next</button>
         </form>
-        <div class="mt-4">
-            <h4>
-                User List
-            </h4>
-
-            <table class="table table-striped mt-4">
-                <thead>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Date of Birth</th>
-                    <th>Pwd</th>
-                    <th>Gender</th>
-                    <th>Comments</th>
-                </tr>
-                </thead>
-                <tbody id="userList"></tbody>
-            </table>
-
-            <p id="emptyTableMessage">No user to display.</p>
-        </div>
     </div>
 
     <div id="secondStep" style="display:none; background-color: #cce8ff">
@@ -112,6 +90,27 @@
             <button type="button" class="btn btn-success" id="save-button" style="margin-bottom: 2%;">Save</button>
 
         </form>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div id="userListContainer">
+        <h4>User List</h4>
+        <table class="table table-striped mt-4">
+            <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Date of Birth</th>
+                <th>Pwd</th>
+                <th>Gender</th>
+                <th>Comments</th>
+            </tr>
+            </thead>
+            <tbody id="userList"></tbody>
+        </table>
+        <p id="emptyTableMessage">No user to display.</p>
     </div>
 </div>
 
