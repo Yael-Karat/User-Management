@@ -29,8 +29,6 @@ const RegistrationModule = (() => {
         return ageDiff >= 18;
     };
 
-
-
     const validateInput = (input, type) => {
         const trimmedInput = input.trim();
         switch (type) {
@@ -135,7 +133,7 @@ const RegistrationModule = (() => {
             document.getElementById('password').value = '';
             document.getElementById('confirm-password').value = '';
             document.getElementById('dob').value = '';
-            document.getElementById('gender').value = 'Please select'; // Reset to default value
+            document.getElementById('gender').value = 'Please select';
             document.getElementById('comments').value = '';
 
             // Reset form fields to their default values
