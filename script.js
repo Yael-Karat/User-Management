@@ -29,17 +29,7 @@ const RegistrationModule = (() => {
         return ageDiff >= 18;
     };
 
-    const validInput = (input, type) => {
-        const trimmedInput = input.trim();
-        switch (type) {
-            case 'firstName':
-                return isValidFirstName(trimmedInput) ? '' : 'First name is mandatory and must contain only alphabets.';
-            case 'lastName':
-                return isValidLastName(trimmedInput) ? '' : 'Last name is mandatory and must contain only alphabets.';
-            case 'email':
-                return isValidEmail(trimmedInput) ? '' : 'Email is mandatory and must be valid for an academic email from Israel (*.ac.il).';
-        }
-    };
+
 
     const validateInput = (input, type) => {
         const trimmedInput = input.trim();
@@ -53,7 +43,7 @@ const RegistrationModule = (() => {
             case 'password':
                 return isValidPassword(trimmedInput) ? '' : 'Password must contain at least one uppercase letter, at least one lowercase letter, one digit, and must be at least 8 characters long.';
             case 'dob':
-                return isValidDateOfBirth(trimmedInput) ? '' : 'User must be at least 18 years old.';
+                return isValidDateOfBirth(trimmedInput) ? '' : 'Date Of Birth is mandatory and user must be at least 18 years old.';
             default:
                 return '';
         }
@@ -64,9 +54,9 @@ const RegistrationModule = (() => {
         const lastName = document.getElementById('last-name').value.trim();
         const email = document.getElementById('email').value.trim();
 
-        const firstNameError = validInput(firstName, 'firstName');
-        const lastNameError = validInput(lastName, 'lastName');
-        const emailError = validInput(email, 'email');
+        const firstNameError = validateInput(firstName, 'firstName');
+        const lastNameError = validateInput(lastName, 'lastName');
+        const emailError = validateInput(email, 'email');
 
         // Check if the email already exists
         const emailExists = userData.some(user => user.email === email);
