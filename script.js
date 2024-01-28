@@ -163,7 +163,7 @@ const RegistrationModule = (() => {
         }
     };
 
-    const goBack = () => {
+    const handlePrevious = () => {
         if (currentStep === 2) {
             // If currently on the second step, go back to the first step
             document.getElementById('secondStep').style.display = 'none';
@@ -205,7 +205,7 @@ const RegistrationModule = (() => {
 
         const backButton = document.getElementById('previous-button');
         if (backButton) {
-            backButton.addEventListener('click', goBack);
+            backButton.addEventListener('click', handlePrevious);
         }
 
         // Corrected id to match the Save button in the HTML
@@ -220,5 +220,6 @@ const RegistrationModule = (() => {
     return {
         validFirstStep,
         renderUserList,
+        handlePrevious
     };
 })();
