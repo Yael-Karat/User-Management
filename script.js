@@ -47,7 +47,7 @@ const RegistrationModule = (() => {
         }
     };
 
-    function validFirstStep() {
+    const validFirstStep = () => {
         // Reset error messages
         document.getElementById('firstNameError').innerText = '';
         document.getElementById('lastNameError').innerText = '';
@@ -65,28 +65,28 @@ const RegistrationModule = (() => {
         const emailExists = userData.some(user => user.email === email);
         if (emailExists) {
             document.getElementById('emailError').innerText = 'Email already exists. Please use a different email.';
-            return; // Stop the registration process
+            return;
         }
 
-        // Display error messages for first name, last name, and email
+        // Display error messages for first name, last name and email
         document.getElementById('firstNameError').innerText = firstNameError;
         document.getElementById('lastNameError').innerText = lastNameError;
         document.getElementById('emailError').innerText = emailError;
 
         if (!firstNameError && !lastNameError && !emailError) {
             // No errors, proceed to the second step
-            handleNext(); // Proceed to the second form
+            handleNext();
         } else {
             // Hide the second form if there are errors
             document.getElementById('secondStep').style.display = 'none';
         }
-    }
+    };
 
     const handleNext = () => {
         // Hide the first form and show the second form
         document.getElementById('firstStep').style.display = 'none';
         document.getElementById('secondStep').style.display = 'block';
-        currentStep = 2; // Update the current step
+        currentStep = 2;
     };
 
     const handleSave = () => {
@@ -135,7 +135,6 @@ const RegistrationModule = (() => {
             }
 
             renderUserList();
-            // Optionally, add a success message or visual indication
 
             // Reset input fields to blank
             document.getElementById('first-name').value = '';
@@ -150,7 +149,6 @@ const RegistrationModule = (() => {
             // Reset form fields to their default values
             document.getElementById('firstForm').reset();
 
-            // Show the first form and hide the second form
             document.getElementById('secondStep').style.display = 'none';
             document.getElementById('firstStep').style.display = 'block';
         } else {
@@ -173,7 +171,7 @@ const RegistrationModule = (() => {
 
     const renderUserList = () => {
         const userList = document.getElementById('userList');
-        userList.innerHTML = ''; // Clear previous list
+        userList.innerHTML = '';
 
         userData.forEach((user) => {
             const row = document.createElement('tr');
@@ -207,7 +205,6 @@ const RegistrationModule = (() => {
             backButton.addEventListener('click', handlePrevious);
         }
 
-        // Corrected id to match the Save button in the HTML
         const saveButton = document.getElementById('save-button');
         if (saveButton) {
             saveButton.addEventListener('click', handleSave);
