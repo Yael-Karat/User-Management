@@ -48,6 +48,11 @@ const RegistrationModule = (() => {
     };
 
     function validFirstStep() {
+        // Reset error messages
+        document.getElementById('firstNameError').innerText = '';
+        document.getElementById('lastNameError').innerText = '';
+        document.getElementById('emailError').innerText = '';
+
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
         const email = document.getElementById('email').value.trim();
@@ -85,6 +90,12 @@ const RegistrationModule = (() => {
     };
 
     const handleSave = () => {
+        // Reset error messages
+        document.getElementById('passwordError').innerText = '';
+        document.getElementById('confirmPasswordError').innerText = '';
+        document.getElementById('dateOfBirthError').innerText = '';
+        document.getElementById('genderError').innerText = '';
+
         const firstName = document.getElementById('first-name').value.trim();
         const lastName = document.getElementById('last-name').value.trim();
         const email = document.getElementById('email').value.trim();
@@ -95,8 +106,8 @@ const RegistrationModule = (() => {
         const comments = document.getElementById('comments').value.trim();
 
         const errors = [
-            validateInput(firstName, 'name'),
-            validateInput(lastName, 'name'),
+            validateInput(firstName, 'firstName'),
+            validateInput(lastName, 'lastName'),
             validateInput(email, 'email'),
             validateInput(password, 'password'),
             password === confirmPassword ? '' : 'Passwords do not match',
