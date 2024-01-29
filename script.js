@@ -2,26 +2,56 @@ const RegistrationModule = (() => {
     let userData = [];
     let currentStep = 1;
 
+    /**
+     * isValidFirstName(firstName: string): boolean
+     * Checks if the provided first name contains only alphabetic characters.
+     * @param firstName {string}
+     * @returns {boolean} indicating whether the first name is valid.
+     */
     const isValidFirstName = (firstName) => {
         const FirstNameRegex = /^[a-zA-Z]+$/;
         return FirstNameRegex.test(firstName);
     };
 
+    /**
+     * isValidLastName(lastName: string): boolean
+     * Checks if the provided last name contains only alphabetic characters.
+     * @param lastName {string}
+     * @returns {boolean} indicating whether the last name is valid.
+     */
     const isValidLastName = (lastName) => {
         const LastNameRegex = /^[a-zA-Z]+$/;
         return LastNameRegex.test(lastName);
     };
 
+    /**
+     * isValidEmail(email: string): boolean
+     * Checks if the provided email follows the pattern of an academic email from Israel (*.ac.il).
+     * @param email {string}
+     * @returns {boolean} indicating whether the email is valid.
+     */
     const isValidEmail = (email) => {
         const emailRegex = /^[a-zA-Z0-9._-]+@([a-zA-Z0-9-]+\.)+ac\.il$/;
         return emailRegex.test(email);
     };
 
+    /**
+     * isValidPassword(password: string): boolean
+     * Checks if the provided password meets specific criteria: at least one uppercase letter, one lowercase letter, one digit, and a minimum length of 8 characters.
+     * @param password {string}
+     * @returns {boolean} indicating whether the password is valid.
+     */
     const isValidPassword = (password) => {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
         return passwordRegex.test(password);
     };
 
+    /**
+     * isValidDateOfBirth(dob: string): boolean
+     * Validates if the user is at least 18 years old based on the provided date of birth.
+     * @param dob {string} representing the user's date of birth in the format 'YYYY-MM-DD'.
+     * @returns {boolean} indicating whether the date of birth is valid.
+     */
     const isValidDateOfBirth = (dob) => {
         const currentDate = new Date();
         const userDate = new Date(dob);
@@ -29,6 +59,13 @@ const RegistrationModule = (() => {
         return ageDiff >= 18;
     };
 
+    /**
+     * validateInput(input: string, type: string): string
+     * Validates various types of user input based on the specified type.
+     * @param input {string} the user input to be validated.
+     * @param type {string} the type of input to be validated ('firstName', 'lastName', 'email', 'password', 'dob').
+     * @returns {string|string} an error message if the input is invalid according to the specified type, otherwise an empty string.
+     */
     const validateInput = (input, type) => {
         const trimmedInput = input.trim();
         switch (type) {
@@ -47,6 +84,12 @@ const RegistrationModule = (() => {
         }
     };
 
+    /**
+     * Handles the validation and processing of user input for the first step of registration.
+     * Validates first name, last name, and email input fields.
+     * Displays error messages if input is invalid or if the email already exists.
+     * Proceeds to the second step if no errors are found.
+     */
     const validFirstStep = () => {
         // Reset error messages
         document.getElementById('firstNameError').innerText = '';
@@ -82,6 +125,10 @@ const RegistrationModule = (() => {
         }
     };
 
+    /**
+     * Handles the transition from the first step of registration to the second step.
+     * Hides the first step form and displays the second step form.
+     */
     const handleNext = () => {
         // Hide the first form and show the second form
         document.getElementById('firstStep').style.display = 'none';
@@ -89,6 +136,12 @@ const RegistrationModule = (() => {
         currentStep = 2;
     };
 
+    /**
+     * Handles the validation and processing of user input for the second step of registration.
+     * Validates all input fields (first name, last name, email, password, confirm password, date of birth, gender).
+     * Displays error messages if input is invalid.
+     * Saves user data if all input is valid, updates the user list, and resets input fields.
+     */
     const handleSave = () => {
         // Reset error messages
         document.getElementById('passwordError').innerText = '';
@@ -160,6 +213,10 @@ const RegistrationModule = (() => {
         }
     };
 
+    /**
+     * Handles navigation back to the first step of registration from the second step.
+     * Hides the second step form and displays the first step form.
+     */
     const handlePrevious = () => {
         if (currentStep === 2) {
             // If currently on the second step, go back to the first step
@@ -169,6 +226,11 @@ const RegistrationModule = (() => {
         }
     };
 
+    /**
+     * Renders the list of registered users in a table format on the webpage.
+     * Populates the table with user data including first name, last name, email, date of birth, password, gender, and comments.
+     * Updates the visibility of the table and an empty table message based on the presence of user data.
+     */
     const renderUserList = () => {
         const userList = document.getElementById('userList');
         userList.innerHTML = '';
